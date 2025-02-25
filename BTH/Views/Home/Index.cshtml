@@ -1,32 +1,11 @@
-@model BMICalculator.Models.BMIModel
-
-@{
-    ViewData["Title"] = "Tính Chỉ Số BMI";
-}
-
-<h2>Tính Chỉ Số BMI</h2>
-
-<!-- Form nhập cân nặng và chiều cao -->
-<form asp-action="Index" method="post">
-    <div>
-        <label>Cân nặng (kg):</label>
-        <input asp-for="Weight" class="form-control" />
-        <span asp-validation-for="Weight" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Chiều cao (m):</label>
-        <input asp-for="Height" class="form-control" />
-        <span asp-validation-for="Height" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-2">Tính BMI</button>
+<h2>Tính chỉ số BMI</h2>
+<form asp-action="Index">
+    <label>Họ và Tên:</label>
+    <input type="text" name="HovaTen" />
+    <label>Cân nặng (kg):</label>
+    <input type="text" name="CanNang" />
+    <label>Chiều cao (m):</label>
+    <input type="text" name="ChieuCao" />
+    <button type="submit">Tính BMI</button>
 </form>
-
-<!-- Kiểm tra và hiển thị kết quả -->
-@if (ViewBag.BMI != null)
-{
-    <h3>Kết quả:</h3>
-    <p>Chỉ số BMI: <strong>@ViewBag.BMI</strong></p>
-    <p>Đánh giá: <strong>@ViewBag.Result</strong></p>
-}
+<p>@ViewBag.Message</p>

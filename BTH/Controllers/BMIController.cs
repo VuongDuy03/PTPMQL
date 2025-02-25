@@ -1,38 +1,24 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BMICalculator.Models;
+using BTH.Models;
 
-namespace BMICalculator.Controllers
+namespace BTH.Controllers
 {
     public class BMIController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult BmiIndex()
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult Index(BMIModel model)
+        public IActionResult Index(BMIModel ps)
         {
-            if (ModelState.IsValid)
-            {
-                // Tính BMI
-                model.BMI = model.Weight / (model.Height * model.Height);
-
-                // Đánh giá kết quả BMI
-                if (model.BMI < 18.5)
-                    model.Result = "Nhẹ cân";
-                else if (model.BMI < 24.9)
-                    model.Result = "Cân nặng bình thường";
-                else if (model.BMI < 30)
-                    model.Result = "Thừa cân";
-                else
-                    model.Result = "Béo phì";
-
-                ViewBag.BMI = model.BMI;
-                ViewBag.Result = model.Result;
-            }
-
-            return View(model);
+            float BMI = ps.Weight / (ps.Height * ps.Height);
+            ViewBag.Message = $"{ps.Name}, BMI: {BMI:0.##}";
+            return View();
         }
+        
     }
 }
