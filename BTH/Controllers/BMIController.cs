@@ -7,7 +7,7 @@ namespace BTH.Controllers
     public class BMIController : Controller
     {
         [HttpGet]
-        public IActionResult BmiIndex()
+        public IActionResult BMIIndex()
         {
             return View();
         }
