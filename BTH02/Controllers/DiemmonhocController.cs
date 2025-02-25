@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BTH.Models;
+using BTH02.Models;
 
-namespace BTH.Controllers
+namespace BTH02.Controllers
 {
     public class DiemmonhocController : Controller
     {

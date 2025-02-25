@@ -1,4 +1,4 @@
-namespace BTH.Models
+namespace BTH02.Models
 {
     public class DiemmonhocModel
     {
