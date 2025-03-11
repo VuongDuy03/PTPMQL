@@ -96,3 +96,4 @@ C:\Users\vuong\OneDrive - Hanoi University of Mining and Geology\Desktop\PTPMQL\
 C:\Users\vuong\OneDrive - Hanoi University of Mining and Geology\Desktop\PTPMQL\MvcMovie\obj\Debug\net9.0\MvcMovie.pdb
 C:\Users\vuong\OneDrive - Hanoi University of Mining and Geology\Desktop\PTPMQL\MvcMovie\obj\Debug\net9.0\MvcMovie.genruntimeconfig.cache
 C:\Users\vuong\OneDrive - Hanoi University of Mining and Geology\Desktop\PTPMQL\MvcMovie\obj\Debug\net9.0\ref\MvcMovie.dll
+C:\Users\vuong\OneDrive - Hanoi University of Mining and Geology\Desktop\PTPMQL\MvcMovie\obj\Debug\net9.0\MvcMovie.csproj.AssemblyReference.cache
