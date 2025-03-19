@@ -1,7 +1,7 @@
 @model MvcMovie.Models.Person
 
 @{
-    ViewData["Title"] = ["Edit"];
+    ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for accept="PersonId" />
+            <input type="hidden" asp-for="PersonId" />
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
@@ -34,5 +34,5 @@
     <a asp-action="Index">Back to List</a>
 </div>
 @section Scripts{
-    @await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

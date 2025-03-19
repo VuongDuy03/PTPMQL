@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MvcMovie.Models;
+using MvcMovie.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
