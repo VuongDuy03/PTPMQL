@@ -1,3 +1,8 @@
+using System.Reflection.PortableExecutable;
+using System.ComponentModel;
+using System;
+using System.IO;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
@@ -123,4 +128,34 @@ namespace MvcMovie.Controllers
         }
         
     }
+
+public async Task<IActionResult> Up load()
+{
+    return View();
+}
+[HttpPost]
+[ValidateAntiForgeryToken]
+
+public async Task<IActionResult> Up load(IFormFile file)
+{
+    if (file!=null)
+    {
+        string fileExtenstion = Path.GetExtenstion(file.FileName);
+        if (fileExtenstion != ".xls" && fileExtenstion != ".xlsx")
+        {
+            ModelState.AddModelError("", "Please choose excel file to upload!");
+        }
+        else
+        {
+            var fileName = DateTime.Now.ToShortTimeString() + fileExtenstion;
+            var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Up loads/Excel", fileName);
+            var fileLocation = new FileInfo(filePath).ToString();
+            using(var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await stream.CopyToAsync(stream);
+            }
+        }
+    }
+}
+
 }
