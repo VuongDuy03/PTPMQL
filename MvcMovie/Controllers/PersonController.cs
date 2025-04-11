@@ -1,21 +1,19 @@
-using System.Reflection.PortableExecutable;
-using System.ComponentModel;
 using System;
 using System.IO;
-using System.Net;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
 
-
 namespace MvcMovie.Controllers
-
 {
-    
     public class PersonController : Controller
-    { 
+    {
         private readonly ApplicationDbContext _context;
+
         public PersonController(ApplicationDbContext context)
         {
             _context = context;
@@ -31,6 +29,7 @@ namespace MvcMovie.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonId, FullName, Address, Email")] Person person)
@@ -43,6 +42,7 @@ namespace MvcMovie.Controllers
             }
             return View(person);
         }
+
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Person == null)
@@ -55,69 +55,74 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-                return View(person);
+
+            return View(person);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]            
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("PersonId,FullName,Address,Email")] Person person)
         {
             if (id != person.PersonId)
             {
-            return NotFound();
+                return NotFound();
             }
 
-        if (ModelState.IsValid)
-        {
-            try
+            if (ModelState.IsValid)
             {
-                _context.Update(person);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonExists(person.PersonId))
+                try
                 {
-                    return NotFound();
+                    _context.Update(person);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!PersonExists(person.PersonId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            return View(person);
         }
-        return View(person);
-        }
-    
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Person == null)
             {
                 return NotFound();
             }
+
             var person = await _context.Person
-            .FirstOrDefaultAsync(m => m.PersonId == id);
+                .FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {
                 return NotFound();
             }
+
             return View(person);
         }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Person == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Person' is null.");
             }
+
             var person = await _context.Person.FindAsync(id);
             if (person != null)
             {
                 _context.Person.Remove(person);
             }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -126,36 +131,37 @@ namespace MvcMovie.Controllers
         {
             return (_context.Person?.Any(e => e.PersonId == id)).GetValueOrDefault();
         }
+
         
-    }
-
-public async Task<IActionResult> Up load()
-{
-    return View();
-}
-[HttpPost]
-[ValidateAntiForgeryToken]
-
-public async Task<IActionResult> Up load(IFormFile file)
-{
-    if (file!=null)
-    {
-        string fileExtenstion = Path.GetExtenstion(file.FileName);
-        if (fileExtenstion != ".xls" && fileExtenstion != ".xlsx")
+        public async Task<IActionResult> Upload()
         {
-            ModelState.AddModelError("", "Please choose excel file to upload!");
+            return View();
         }
-        else
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(IFormFile file)
         {
-            var fileName = DateTime.Now.ToShortTimeString() + fileExtenstion;
-            var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Up loads/Excel", fileName);
-            var fileLocation = new FileInfo(filePath).ToString();
-            using(var stream = new FileStream(filePath, FileMode.Create))
+            if (file != null)
             {
-                await stream.CopyToAsync(stream);
+                string fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension != ".xls" && fileExtension != ".xlsx")
+                {
+                    ModelState.AddModelError("", "Please choose an Excel file to upload!");
+                }
+                else
+                {
+                    var fileName = Datetime.Now.ToShortTimeString() + fileExtension;
+                    var filePath = filePath.Combine(Directory.GetCurrenDirectory() + "/Uploads/Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
             }
+            return View();
         }
     }
-}
-
 }
