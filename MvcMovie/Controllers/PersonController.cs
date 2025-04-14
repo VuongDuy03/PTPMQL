@@ -1,19 +1,16 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MvcMovie.Data;
-using MvcMovie.Models;
+using PTPMQLMvc.Models;
+using PTPMQLMvc.Data;
+using PTPMQLMvc.Models.Process;
 
 namespace MvcMovie.Controllers
 {
     public class PersonController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private ExcelProcess _excelProcess = new ExcelProcess();
         public PersonController(ApplicationDbContext context)
         {
             _context = context;
@@ -158,6 +155,20 @@ namespace MvcMovie.Controllers
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
+                         var dt = _excelProcess.ExcelToDataTable(fileLocation);
+                        //using for loop to read data from dt
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            //create new Persom object
+                            var ps = new Person();
+                            ps.PersonId = dt.Rows[i] [0].ToString();
+                            ps.FullName = dt.Rows[i] [1].ToString();
+                            ps.Address = dt.Rows[i] [2].ToString();
+                            //add object to context
+                            _context.Add(ps);
+                        }
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
                     }
                 }
             }
